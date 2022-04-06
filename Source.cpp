@@ -7,16 +7,20 @@
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec3 vertex_colour;\n"
+"out vec3 colour;\n"
 "void main()\n"
 "{\n"
+"   colour = vertex_colour;\n"
 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
+"in vec3 colour;\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"    FragColor = vec4(colour, 1.0f);\n"
 "}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -98,6 +102,13 @@ int main()
     -0.5f, -0.5f, 0.0f,  // bottom left
     -0.5f,  0.5f, 0.0f   // top left 
     };
+    float colours[] = {
+      1.0f, 0.0f,  0.0f,
+      0.0f, 1.0f,  0.0f,
+      0.0f, 0.0f,  1.0f,
+      1.0f, 1.0f,  1.0f,
+    };
+
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,   // first triangle
         1, 2, 3    // second triangle
@@ -113,14 +124,22 @@ int main()
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //GL_DYNAMIC_DRAW, GL_STREAM_DRAW
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
+
+
+    GLuint colours_vbo = 0;
+    glGenBuffers(1, &colours_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, colours_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colours), colours, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
 
     unsigned int EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     //unbind vertex array and confgure other VA's
     glBindVertexArray(0);
@@ -128,7 +147,7 @@ int main()
 
     glUseProgram(shaderProgram); //state change call ~ from now use this program, doesn't matter how many times called
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
     while (!glfwWindowShouldClose(window))

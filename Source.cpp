@@ -99,8 +99,8 @@ int main()
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
+    glBindVertexArray(VAO); //also a state object, remembers how we configured the VBO, needs to be done before setting VBO properties
+    //when VBO configuration is done, we can unbind it, make other VAO's and configure those. when drawing, select the VAO to use by binding again
 
     unsigned int VBO;
     glGenBuffers(1, &VBO);
@@ -110,22 +110,24 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glUseProgram(shaderProgram);
+    //unbind vertex array and confgure other VA's
+    glBindVertexArray(0);
+    //...
 
-
-    
+    glUseProgram(shaderProgram); //state change call ~ from now use this program, doesn't matter how many times called
     glBindVertexArray(VAO);
     
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glfwSwapBuffers(window);
+    
 
     while (!glfwWindowShouldClose(window))
     {
-        //glfwSwapBuffers(window);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glfwSwapBuffers(window);
+
         glfwPollEvents();
     }
 

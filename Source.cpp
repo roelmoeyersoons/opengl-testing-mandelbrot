@@ -62,18 +62,36 @@ int main()
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
+    //float vertices[] = {
+    //    // positions          // texture coords
+    //     0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+    //     0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+    //    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+    //    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+    //};
+
+    
+    float x = -sqrtf(2.0/ 9);
+
     float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+        0.0f, 1.0f, 0.0f,  1.0f, 1.0f, // top right
+        0.0f, -0.33f, sqrtf(8.0/9),   1.0f, 0.0f, // top right
+        sqrtf(2.0 / 3), -0.33f, -sqrtf(2.0/9),   0.0f, 0.0f, // top right
+        -sqrtf(2.0 / 3), -0.33f, -sqrtf(2.0/9),   0.0f, 1.0f, // top right
     };
 
     unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
+        0,1,2,
+        0,1,3,
+        0,2,3,
+        1,2,3,
     };
+
+    //unsigned int indices[] = {
+    //    0, 1, 3, // first triangle
+    //    1, 2, 3  // second triangle
+    //};
+
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -152,7 +170,7 @@ int main()
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
 
-
+    glEnable(GL_DEPTH_TEST);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -176,8 +194,8 @@ int main()
 
         // create transformations
         glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        //transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 0.0f));
 
         // get matrix's uniform location and set matrix
         
@@ -186,23 +204,23 @@ int main()
 
         // render container
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
 
-        // create transformations
-        glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
-        transform2 = glm::rotate(transform2, -(float)glfwGetTime(), glm::vec3(0.5f, 0.5f, 0.5f));
-        transform2 = glm::scale(transform2, glm::vec3(0.5f, 0.5f, 0.5f));
+        //// create transformations
+        //glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
+        //transform2 = glm::rotate(transform2, -(float)glfwGetTime(), glm::vec3(0.5f, 0.5f, 0.5f));
+        //transform2 = glm::scale(transform2, glm::vec3(0.5f, 0.5f, 0.5f));
 
-        // get matrix's uniform location and set matrix
+        //// get matrix's uniform location and set matrix
 
-        //transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+        ////transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
 
-        // render container
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //// render container
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

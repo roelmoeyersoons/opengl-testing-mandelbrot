@@ -184,6 +184,21 @@ int main()
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
+    srand(time(NULL));
+
+    int rotationInversed[] = {
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+        rand() % 3 - 1,
+    };
+
     glEnable(GL_DEPTH_TEST);
     // render loop
     // -----------
@@ -211,18 +226,6 @@ int main()
        //transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, 0.3f));
        //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 0.0f));
 
-        glm::mat4 model = glm::mat4(1.0f);
-        //transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, 0.3f));
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 0.0f));
-
-        for (int i = 0; i < 10; i++) {
-
-        }
-
-        
-
-       
-
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -230,9 +233,6 @@ int main()
         glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 
         // get matrix's uniform location and set matrix
-        
-        unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
         unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -240,25 +240,24 @@ int main()
         unsigned int projLoc = glGetUniformLocation(ourShader.ID, "projection");
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
-        // render container
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < 10; i++) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, positions[i]);
+            model = glm::rotate(model, (float)glfwGetTime()* rotationInversed[i], glm::vec3(0.0f, 1.0f, 0.0f));
 
+            unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-        //// create transformations
-        //glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        //transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
-        //transform2 = glm::rotate(transform2, -(float)glfwGetTime(), glm::vec3(0.5f, 0.5f, 0.5f));
-        //transform2 = glm::scale(transform2, glm::vec3(0.5f, 0.5f, 0.5f));
+            // render container
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        }
 
-        //// get matrix's uniform location and set matrix
+        
 
-        ////transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+        
 
-        //// render container
-        //glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

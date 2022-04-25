@@ -152,6 +152,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Camera.h" />
     <ClInclude Include="Include\ShaderLoader.h" />
   </ItemGroup>
   <ItemGroup>

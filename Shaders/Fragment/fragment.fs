@@ -13,8 +13,8 @@ const unsigned int INFINITY = 100000;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
-const vec3 c = vec3(1.0, 1.0, 0.5);
-const vec3 d = vec3(0.80, 0.90, 0.30);
+const vec3 c = vec3(1.0, 0.7, 0.4);
+const vec3 d = vec3(0.00, 0.15, 0.20);
 
 vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {

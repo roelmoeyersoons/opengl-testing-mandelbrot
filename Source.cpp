@@ -22,8 +22,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 bool processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 1500;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 900;
 
 //adjustable settings
 float Zoom = 1;
@@ -138,7 +138,7 @@ int main()
     // render loop
     // -----------
 
-    float iterations = 0;
+    int mandelbrotIterations = 0;
     bool lastIterationActivated = false;
     while (!glfwWindowShouldClose(window))
     {
@@ -148,7 +148,7 @@ int main()
 
         
 
-        ourShader.setFloat("ITERATIONS", iterations);
+        ourShader.setInt("ITERATIONS", mandelbrotIterations);
         ourShader.setFloat("xCoord", xCoord);
         ourShader.setFloat("yCoord", yCoord);
         ourShader.setFloat("Zoom", Zoom);
@@ -156,11 +156,14 @@ int main()
         // -----
 
         SleepEx(100, false);
-        iterations++;
+        int upperBoundIterations = int(log10(Zoom))*20 + 50;
+        mandelbrotIterations += int(log10(Zoom)) + 1;
+        if (mandelbrotIterations > upperBoundIterations)
+            mandelbrotIterations = upperBoundIterations;
         
         bool activated = processInput(window);
         if(activated == false && lastIterationActivated == true)
-            iterations = 5;
+            mandelbrotIterations = 5;
         lastIterationActivated = activated;
         ourShader.use();
 

@@ -8,7 +8,7 @@ in vec2 fragCoords;
 
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
-uniform float ITERATIONS;
+uniform int ITERATIONS;
 uniform float xCoord;
 uniform float yCoord;
 uniform float Zoom;
@@ -31,7 +31,7 @@ void main()
 {
 
     float real = (fragCoords.x * 1.3f - 0.5f)/Zoom + xCoord;
-    float imag = (fragCoords.y * 1.3f - 0.5f)/Zoom + yCoord;
+    float imag = (fragCoords.y * 1.3f - 0.2f)/Zoom + yCoord;
     float accReal = 0.0f;
     float accImag = 0.0f;
     float vecSize = 0.0f;

@@ -9,8 +9,11 @@ in vec2 fragCoords;
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
 
-const float ITERATIONS = 20;
-const float INFINITY = 1000000.0f;
+uniform float ITERATIONS;
+//uniform float infinity;
+
+//const float ITERATIONS = 20;
+const float INFINITY = 1000000000.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);

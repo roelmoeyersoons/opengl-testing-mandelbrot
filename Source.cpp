@@ -22,8 +22,13 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 900;
+const unsigned int SCR_WIDTH = 1500;
+const unsigned int SCR_HEIGHT = 600;
+
+//adjustable settings
+float Zoom = 1;
+float xCoord = 0;
+float yCoord = 0;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -132,6 +137,8 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // render loop
     // -----------
+
+    float iterations = 0;
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -139,8 +146,12 @@ int main()
         lastFrame = currentFrame;
 
         SleepEx(100, false);
+        iterations++;
 
-
+        //ourShader.setFloat("ITERATIONS", iterations);
+        ourShader.setFloat("xCoord", xCoord);
+        ourShader.setFloat("yCoord", yCoord);
+        ourShader.setFloat("Zoom", Zoom);
         // input
         // -----
         processInput(window);
@@ -181,14 +192,31 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    
+    
+    //2D stuff
+    
+   
 
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        Zoom *= 1.5f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        Zoom /= 1.5f;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        yCoord += 0.1f / Zoom;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        yCoord -= 0.1f / Zoom;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        xCoord -= 0.1f / Zoom;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        xCoord += 0.1f / Zoom;
 
+    //camera stuff
     float cameraSpeed = 5.0f * deltaTime; // adjust accordingly
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         cameraSpeed *= 3;
     }
-
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -198,10 +226,8 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         camera.ProcessKeyboard(UP, deltaTime);
-
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         camera.ProcessKeyboard(DOWN, deltaTime);
 }

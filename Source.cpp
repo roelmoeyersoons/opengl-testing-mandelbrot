@@ -19,7 +19,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow* window);
+bool processInput(GLFWwindow* window);
 
 // settings
 const unsigned int SCR_WIDTH = 1500;
@@ -145,8 +145,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        SleepEx(100, false);
-        iterations++;
+        
 
         //ourShader.setFloat("ITERATIONS", iterations);
         ourShader.setFloat("xCoord", xCoord);
@@ -154,7 +153,13 @@ int main()
         ourShader.setFloat("Zoom", Zoom);
         // input
         // -----
-        processInput(window);
+
+        SleepEx(100, false);
+        iterations++;
+        
+        bool shouldReset = processInput(window);
+        if (shouldReset)
+            iterations = 0;
 
         ourShader.use();
 
@@ -188,20 +193,32 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
+bool processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     
-    
     //2D stuff
     
-   
+    int interestedKeys[] = {
+         GLFW_KEY_LEFT_SHIFT,
+         GLFW_KEY_LEFT_CONTROL,
+         GLFW_KEY_W,
+         GLFW_KEY_S,
+         GLFW_KEY_A,
+         GLFW_KEY_D,
+    };
+
+    bool keyPressed = false;
+    for (int i = 0; i < sizeof(interestedKeys) / sizeof(int); i++) {
+        if (glfwGetKey(window, interestedKeys[i]) == GLFW_PRESS)
+            keyPressed = true;
+    }
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        Zoom *= 1.5f;
+        Zoom *= 1.2f;    
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        Zoom /= 1.5f;
+        Zoom /= 1.2f;     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         yCoord += 0.1f / Zoom;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -230,6 +247,8 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(UP, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         camera.ProcessKeyboard(DOWN, deltaTime);
+
+    return keyPressed;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

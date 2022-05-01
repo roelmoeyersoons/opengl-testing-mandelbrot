@@ -9,10 +9,13 @@ in vec2 fragCoords;
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
 
-uniform float ITERATIONS;
+//uniform float ITERATIONS;
+uniform float xCoord;
+uniform float yCoord;
+uniform float Zoom;
 //uniform float infinity;
 
-//const float ITERATIONS = 20;
+const float ITERATIONS = 50;
 const float INFINITY = 1000000000.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
@@ -28,8 +31,8 @@ vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 void main()
 {
 
-    float real = fragCoords.x * 1.3f - 0.5f;
-    float imag = fragCoords.y * 1.3f;
+    float real = (fragCoords.x * 1.3f - 0.5f)/Zoom + xCoord;
+    float imag = (fragCoords.y * 1.3f - 0.5f)/Zoom + yCoord;
     float accReal = 0.0f;
     float accImag = 0.0f;
     float vecSize = 0.0f;

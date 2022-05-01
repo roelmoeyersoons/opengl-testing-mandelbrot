@@ -139,6 +139,7 @@ int main()
     // -----------
 
     float iterations = 0;
+    bool lastIterationActivated = false;
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -147,7 +148,7 @@ int main()
 
         
 
-        //ourShader.setFloat("ITERATIONS", iterations);
+        ourShader.setFloat("ITERATIONS", iterations);
         ourShader.setFloat("xCoord", xCoord);
         ourShader.setFloat("yCoord", yCoord);
         ourShader.setFloat("Zoom", Zoom);
@@ -157,10 +158,10 @@ int main()
         SleepEx(100, false);
         iterations++;
         
-        bool shouldReset = processInput(window);
-        if (shouldReset)
-            iterations = 0;
-
+        bool activated = processInput(window);
+        if(activated == false && lastIterationActivated == true)
+            iterations = 5;
+        lastIterationActivated = activated;
         ourShader.use();
 
         // render

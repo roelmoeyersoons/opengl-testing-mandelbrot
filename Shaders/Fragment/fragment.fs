@@ -1,4 +1,5 @@
 #version 330 core
+#pragma language glsl3
 
 out vec4 FragColor;
 
@@ -8,8 +9,8 @@ in vec2 fragCoords;
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
 
-const unsigned int ITERATIONS = 100;
-const unsigned int INFINITY = 100000;
+const float ITERATIONS = 20;
+const float INFINITY = 1000000.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
@@ -30,7 +31,7 @@ void main()
     float accImag = 0.0f;
     float vecSize = 0.0f;
 
-    int i = 0;
+    float i = 0;
     while(i < ITERATIONS && vecSize < INFINITY){
         float previousAccReal = accReal;
         accReal = ((previousAccReal * previousAccReal) - (accImag * accImag)) + real;

@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Users\daroe\Desktop\projecten\opengl\Shared\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Users\daroe\Desktop\projecten\opengl\Shared\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Projects\Include;D:\Users\daroe\Desktop\projecten\opengl\Shared\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Projects\Libs;D:\Users\daroe\Desktop\projecten\opengl\Shared\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

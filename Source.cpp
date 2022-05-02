@@ -26,9 +26,9 @@ const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
 
 //adjustable settings
-float Zoom = 1;
-float xCoord = 0;
-float yCoord = 0;
+double Zoom = 1;
+double xCoord = 0;
+double yCoord = 0;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -149,13 +149,16 @@ int main()
         
 
         ourShader.setInt("ITERATIONS", mandelbrotIterations);
-        ourShader.setFloat("xCoord", xCoord);
-        ourShader.setFloat("yCoord", yCoord);
-        ourShader.setFloat("Zoom", Zoom);
+        ourShader.setDouble("xCoord", xCoord);
+        ourShader.setDouble("yCoord", yCoord);
+        ourShader.setDouble("Zoom", Zoom);
         // input
         // -----
 
-        SleepEx(100, false);
+        if (deltaTime < 100) {
+            SleepEx(100 - deltaTime, false);
+        }
+        
         int upperBoundIterations = int(log10(Zoom))*20 + 50;
         mandelbrotIterations += int(log10(Zoom)) + 1;
         if (mandelbrotIterations > upperBoundIterations)
@@ -163,7 +166,7 @@ int main()
         
         bool activated = processInput(window);
         if(activated == false && lastIterationActivated == true)
-            mandelbrotIterations = 5;
+            mandelbrotIterations = int(log10(Zoom))*10 + 1;
         lastIterationActivated = activated;
         ourShader.use();
 
@@ -220,15 +223,15 @@ bool processInput(GLFWwindow* window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        Zoom *= 1.2f;    
+        Zoom *= 1.1f;    
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        Zoom /= 1.2f;     
+        Zoom /= 1.1f;     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        yCoord += 0.1f / Zoom;
+        yCoord += 0.1f / Zoom; //if Zoom is a double, your coords also need to be doulbes, otherwise the movement can get 'locked' ~ +- 0
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         yCoord -= 0.1f / Zoom;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        xCoord -= 0.1f / Zoom;
+        xCoord -= 0.1f / Zoom; 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         xCoord += 0.1f / Zoom;
 

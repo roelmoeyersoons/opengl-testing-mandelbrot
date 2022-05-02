@@ -84,7 +84,13 @@ void ShaderLoader::setInt(const std::string& name, int value) const
 // ------------------------------------------------------------------------
 void ShaderLoader::setFloat(const std::string& name, float value) const
 {
-    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    int loc = glGetUniformLocation(ID, name.c_str());
+    glUniform1f(loc, value);
+}
+void ShaderLoader::setDouble(const std::string& name, double value) const
+{
+    int loc = glGetUniformLocation(ID, name.c_str());
+    glUniform1d(loc, value);
 }
 
 

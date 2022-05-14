@@ -156,7 +156,8 @@
     <ClInclude Include="Include\ShaderLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Fragment\fragment.fs" />
+    <None Include="Shaders\Fragment\object.fs" />
+    <None Include="Shaders\Fragment\lightSource.fs" />
     <None Include="Shaders\Vertex\vertex.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

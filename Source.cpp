@@ -168,6 +168,10 @@ int main()
 
     // render loop
     // -----------
+
+    float xCoordinate = -5.0f;
+    bool movePositiveX = true;
+
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -203,6 +207,19 @@ int main()
 
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
+        if (movePositiveX) {
+            xCoordinate += 0.001f;
+            if (xCoordinate >= 5.0f)
+                movePositiveX = false;
+        }
+        else {
+            xCoordinate -= 0.001f;
+            if (xCoordinate <= -5.0f)
+                movePositiveX = true;
+        }
+
+
+        model = glm::translate(model, glm::vec3(xCoordinate, 0.0f, 0.0f));
         lightingShader.setMat4("model", model);
 
         // render the cube

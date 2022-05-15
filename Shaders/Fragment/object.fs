@@ -15,7 +15,7 @@ uniform vec3 lightPos;
 void main()
 {
     //FragColor = mix(texture(texture1, fTexCoords), texture(texture2, fTexCoords), 0.3);
-    float ambientStrength = 0.3;
+    float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * lightColor;
 
     vec3 norm = normalize(pNormal);

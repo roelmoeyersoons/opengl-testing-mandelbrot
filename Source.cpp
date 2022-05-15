@@ -172,6 +172,8 @@ int main()
     float xCoordinate = -5.0f;
     bool movePositiveX = true;
 
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -195,8 +197,8 @@ int main()
        //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 0.0f));
 
         lightingShader.use();
-        lightingShader.setVec3("objectColor", 1.0f, 0.0f, 1.0f);
-        lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("objectColor", 0.8f, 0.5f, 0.8f);
+        lightingShader.setVec3("lightColor", lightColor);
         lightingShader.setVec3("lightPos", lightPos);
 
         // view/projection transformations
@@ -231,6 +233,7 @@ int main()
         lightCubeShader.use();
         lightCubeShader.setMat4("projection", projection);
         lightCubeShader.setMat4("view", view);
+        lightCubeShader.setVec3("lightSourceColor", lightColor);
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube

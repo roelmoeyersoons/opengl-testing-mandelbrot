@@ -40,8 +40,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Vertex\vertex.vs" />
+    <None Include="Shaders\Vertex\object.vs" />
     <None Include="Shaders\Fragment\object.fs" />
     <None Include="Shaders\Fragment\lightSource.fs" />
+    <None Include="Shaders\Vertex\lightSource.vs" />
   </ItemGroup>
 </Project>

@@ -53,7 +53,7 @@ void main()
     //if(division < 0.0f) mirrors against y axis, this is like a abs(atan) 
     //    division *=-1;
 
-    float angleRadians = atan(y, x);
+    float angleRadians = atan(division);
     float angleNormalized = angleRadians / PI + 0.5;
     
     //vec3 color = palette(angle, a, b, c, d);

@@ -11,57 +11,55 @@ in vec2 fragCoords;
 //uniform sampler2D texture2;
 
 uniform int Time;
-uniform int ITERATIONS;
-uniform double xCoord;
-uniform double yCoord;
-uniform double Zoom;
+//uniform int ITERATIONS;
+//uniform double xCoord;
+//uniform double yCoord;
+//uniform double Zoom;
 //uniform float infinity;
 
 //const float ITERATIONS = 50;
 const float INFINITY = 100.0f;
+const float SPIRALS = 1;
+const float PI = 3.14159265359f;
+const float TAUINVERT = 0.15923566879f;
+const float PHASE = TAUINVERT * SPIRALS;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
-const vec3 c = vec3(1.0, 0.7, 0.4);
-const vec3 d = vec3(0.00, 0.15, 0.20);
-const vec3 a2 = vec3(0.2, 0.5, 0.4);
-const vec3 b2 = vec3(0.2, 0.4, 0.2);
-const vec3 c2 = vec3(1.5, 0.5, 0.5);
-const vec3 d2 = vec3(0.00, 0.25, 0.25);
+const vec3 c = vec3(1.0, 1.0, 1.0);
+const vec3 d = vec3(0.00, 0.0, 0.0);  
 
 
-vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
+vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d)
 {
-    vec3 fullColor = a + b*cos( 6.28318*(c*float(t)+d) );
-    vec3 alternateColor = a2 + b2*cos( 6.28318*(c2*float(t)+d2) ); 
-    float amountFull= abs(sin(Time/float(30)));
-    
-
-    return amountFull * fullColor +  (1-amountFull) * alternateColor;
+    vec3 fullColor = a + b*cos( 6.28318*(c*float(t)+d));
+    return fullColor;
 }
+//dus: je berekent atan: dit geeft een hoek/radian terug op basis van ingegeven xy coordinaat
+//hierin mag je een getal steken van -3.14 tot +3.14, alles van pi
+//indien x < 0 is dan moet je atan + pi doen
 
+//hierboven zie je een cos functie, die is defined
 void main()
 {
+    float x = fragCoords.x;
+    float y = fragCoords.y;
+    float radius = sqrt(x*x + y*y);
 
-    double real = (fragCoords.x * 1.3f - 0.5f)/Zoom + xCoord;
-    double imag = (fragCoords.y * 1.3f - 0.2f)/Zoom + yCoord;
-    double accReal = 0.0f;
-    double accImag = 0.0f;
-    double vecSize = 0.0f;
+    //float angle = acos(x/radius);
+    //if(y < 0)
+    //    angle*=-1;
+    float division = y/x;
+    //if(division < 0.0f) mirrors against y axis, this is like a abs(atan) 
+    //    division *=-1;
 
-    int i = 0;
-    while(i < ITERATIONS && vecSize < INFINITY){
-        double previousAccReal = accReal;
-        accReal = ((previousAccReal * previousAccReal) - (accImag * accImag)) + real;
-        accImag = 2*(previousAccReal * accImag) + imag;
+    float angleRadians = atan(y, x);
+    float angleNormalized = angleRadians / PI + 0.5;
+    
+    //vec3 color = palette(angle, a, b, c, d);
+    vec3 color = vec3(angleNormalized, 0.0f, 0.0f);
 
-        vecSize = accReal * accReal - accImag * accImag;
-        i++;
-    }
-
-    double normalized = pow((float(i)/ITERATIONS),3);
-    vec3 color = palette(normalized, a, b, c, d);
-    //vec3 color = vec3(normalized, 0.0f, 0.0f);
+    
 
     FragColor = vec4(color, 1.0f);
     //FragColor = mix(texture(texture1, fTexCoords), texture(texture2, fTexCoords), 0.3);

@@ -138,40 +138,20 @@ int main()
     // render loop
     // -----------
 
-    int loopIterations = 0;
-    int mandelbrotIterations = 0;
-    bool lastIterationActivated = false;
     while (!glfwWindowShouldClose(window))
     {
-        loopIterations++;
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        
-
-        ourShader.setInt("ITERATIONS", mandelbrotIterations);
-        ourShader.setDouble("xCoord", xCoord);
-        ourShader.setDouble("yCoord", yCoord);
-        ourShader.setDouble("Zoom", Zoom);
-
-        ourShader.setInt("Time", loopIterations);
+        ourShader.setInt("Time", glfwGetTime());
         // input
         // -----
 
-        if (deltaTime < 100) {
-            SleepEx(100 - deltaTime, false);
+        if (deltaTime < 50) {
+            SleepEx(50 - deltaTime, false);
         }
         
-        int upperBoundIterations = int(log10(Zoom))*20 + 50;
-        mandelbrotIterations += int(log10(Zoom))*3 + 1;
-        if (mandelbrotIterations > upperBoundIterations)
-            mandelbrotIterations = upperBoundIterations;
-        
-        bool activated = processInput(window);
-        if(activated == false && lastIterationActivated == true)
-            mandelbrotIterations = int(log10(Zoom))*10 + 1;
-        lastIterationActivated = activated;
         ourShader.use();
 
         // render

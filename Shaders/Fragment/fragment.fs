@@ -8,7 +8,7 @@ in vec3 ourColor;
 in vec2 fragCoords;
 
 
-uniform int Time;
+uniform float Time;
 
 //const float ITERATIONS = 50;
 const float INFINITY = 100.0f;
@@ -44,7 +44,7 @@ void main()
     //vec3 color = vec3(angleRadians, 0.0f, 0.0f);
 
     //double normalized = pow((float(i)/ITERATIONS),3);
-    vec3 color = palette(angleRadians + radius/2, a, b, c, d);
+    vec3 color = palette(angleRadians + radius/2 + Time, a, b, c, d);
     //vec3 color = vec3(normalized, 0.0f, 0.0f);
 
     FragColor = vec4(color, 1.0f);

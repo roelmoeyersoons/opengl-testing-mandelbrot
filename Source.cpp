@@ -144,15 +144,17 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        ourShader.setInt("Time", glfwGetTime());
+        ourShader.setFloat("Time", currentFrame);
+        
         // input
         // -----
 
-        if (deltaTime < 50) {
-            SleepEx(50 - deltaTime, false);
+        if (deltaTime < 25) {
+            SleepEx(25 - deltaTime, false);
         }
         
         ourShader.use();
+        
 
         // render
         // ------

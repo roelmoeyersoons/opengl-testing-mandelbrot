@@ -141,7 +141,7 @@ int main()
     std::vector<float> pixel_data(SCR_WIDTH * SCR_HEIGHT, 0.0f);
     float minIterations = 0;
     float maxIterations = 10;
-    const int MAXITERATIONS = 500;
+    const int MAXITERATIONS = 800;
     
     while (!glfwWindowShouldClose(window))
     {
@@ -234,17 +234,17 @@ bool processInput(GLFWwindow* window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        Zoom *= 1.1f;    
+        Zoom *= 1.05f;    
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        Zoom /= 1.1f;     
+        Zoom /= 1.05f;     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        yCoord += 0.1f / Zoom; //if Zoom is a double, your coords also need to be doulbes, otherwise the movement can get 'locked' ~ +- 0
+        yCoord += 0.06f / Zoom; //if Zoom is a double, your coords also need to be doulbes, otherwise the movement can get 'locked' ~ +- 0
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        yCoord -= 0.1f / Zoom;
+        yCoord -= 0.06f / Zoom;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        xCoord -= 0.1f / Zoom; 
+        xCoord -= 0.06f / Zoom; 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        xCoord += 0.1f / Zoom;
+        xCoord += 0.06f / Zoom;
 
     //camera stuff
     float cameraSpeed = 5.0f * deltaTime; // adjust accordingly

@@ -19,26 +19,19 @@ uniform double xCoord;
 uniform double yCoord;
 uniform double Zoom;
 
-const int MAXITERATIONS = 500;
+const int MAXITERATIONS = 800;
 const float INFINITY = 4.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
-const vec3 c = vec3(1.0, 0.7, 0.4);
+const vec3 c = vec3(10.0, 7, 4);
 const vec3 d = vec3(0.00, 0.15, 0.20);
-const vec3 a2 = vec3(0.2, 0.5, 0.4);
-const vec3 b2 = vec3(0.2, 0.4, 0.2);
-const vec3 c2 = vec3(1.5, 0.5, 0.5);
-const vec3 d2 = vec3(0.00, 0.25, 0.25);
+
 
 
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
     vec3 fullColor = a + b*cos( 6.28318*(c*float(t)+d) );
-    //vec3 alternateColor = a2 + b2*cos( 6.28318*(c2*float(t)+d2) ); 
-    //float amountFull= abs(sin(Time/float(30)));
-    
-
     return fullColor;
 }
 
@@ -52,7 +45,8 @@ void main()
     double vecSize = 0.0f;
 
     int i = 0;
-    
+    //float startingHeuristic = minIterations * 4/5;
+    //float endingHeuristic = MAXITERATIONS + startingHeuristic;
 
     while(i < MAXITERATIONS && vecSize < INFINITY){
         double previousAccReal = accReal;

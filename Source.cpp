@@ -138,54 +138,61 @@ int main()
     // render loop
     // -----------
 
-    int loopIterations = 0;
-    int mandelbrotIterations = 0;
-    bool lastIterationActivated = false;
+    std::vector<float> pixel_data(SCR_WIDTH * SCR_HEIGHT, 0.0f);
+    float minIterations = 0;
+    float maxIterations = 10;
+    const int MAXITERATIONS = 500;
+    
     while (!glfwWindowShouldClose(window))
     {
-        loopIterations++;
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         
-
-        ourShader.setInt("ITERATIONS", mandelbrotIterations);
         ourShader.setDouble("xCoord", xCoord);
         ourShader.setDouble("yCoord", yCoord);
+        ourShader.setFloat("minIterations", minIterations);
+        ourShader.setFloat("maxIterations", maxIterations);
         ourShader.setDouble("Zoom", Zoom);
 
-        ourShader.setInt("Time", loopIterations);
+        //ourShader.setInt("Time", loopIterations);
         // input
         // -----
 
-        if (deltaTime < 100) {
-            SleepEx(100 - deltaTime, false);
+        if (deltaTime < 30) {
+            SleepEx(30 - deltaTime, false);
         }
         
-        int upperBoundIterations = int(log10(Zoom))*20 + 50;
-        mandelbrotIterations += int(log10(Zoom))*3 + 1;
-        if (mandelbrotIterations > upperBoundIterations)
-            mandelbrotIterations = upperBoundIterations;
-        
-        bool activated = processInput(window);
-        if(activated == false && lastIterationActivated == true)
-            mandelbrotIterations = int(log10(Zoom))*10 + 1;
-        lastIterationActivated = activated;
         ourShader.use();
 
         // render
         // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+        //should be gl_ints since but fragdepth is a float, alas
+        glReadPixels(0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_COMPONENT, GL_FLOAT, pixel_data.data());
+
+        minIterations = 1;
+        maxIterations = 0;
+        for (int i = 0; i < SCR_WIDTH * SCR_HEIGHT; i++) {
+            if (pixel_data[i] < minIterations) 
+                minIterations = pixel_data[i];
+            if (pixel_data[i] > maxIterations)
+                maxIterations = pixel_data[i];
+        }
+        minIterations *= MAXITERATIONS;
+        maxIterations *= MAXITERATIONS;
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
+        bool activated = processInput(window);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

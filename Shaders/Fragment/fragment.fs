@@ -3,6 +3,10 @@
 #extension GL_ARB_gpu_shader_fp64 : enable
 
 out vec4 FragColor;
+out float gl_FragDepth;
+
+uniform float minIterations;
+uniform float maxIterations;
 
 in vec3 ourColor;
 in vec2 fragCoords;
@@ -11,14 +15,12 @@ in vec2 fragCoords;
 //uniform sampler2D texture2;
 
 uniform int Time;
-uniform int ITERATIONS;
 uniform double xCoord;
 uniform double yCoord;
 uniform double Zoom;
-//uniform float infinity;
 
-//const float ITERATIONS = 50;
-const float INFINITY = 100.0f;
+const int MAXITERATIONS = 500;
+const float INFINITY = 4.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
@@ -33,11 +35,11 @@ const vec3 d2 = vec3(0.00, 0.25, 0.25);
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
     vec3 fullColor = a + b*cos( 6.28318*(c*float(t)+d) );
-    vec3 alternateColor = a2 + b2*cos( 6.28318*(c2*float(t)+d2) ); 
-    float amountFull= abs(sin(Time/float(30)));
+    //vec3 alternateColor = a2 + b2*cos( 6.28318*(c2*float(t)+d2) ); 
+    //float amountFull= abs(sin(Time/float(30)));
     
 
-    return amountFull * fullColor +  (1-amountFull) * alternateColor;
+    return fullColor;
 }
 
 void main()
@@ -50,7 +52,9 @@ void main()
     double vecSize = 0.0f;
 
     int i = 0;
-    while(i < ITERATIONS && vecSize < INFINITY){
+    
+
+    while(i < MAXITERATIONS && vecSize < INFINITY){
         double previousAccReal = accReal;
         accReal = ((previousAccReal * previousAccReal) - (accImag * accImag)) + real;
         accImag = 2*(previousAccReal * accImag) + imag;
@@ -58,8 +62,9 @@ void main()
         vecSize = accReal * accReal - accImag * accImag;
         i++;
     }
+    gl_FragDepth = float(i)/MAXITERATIONS;
 
-    double normalized = pow((float(i)/ITERATIONS),3);
+    double normalized = float(i - minIterations)/(maxIterations - minIterations);
     vec3 color = palette(normalized, a, b, c, d);
     //vec3 color = vec3(normalized, 0.0f, 0.0f);
 

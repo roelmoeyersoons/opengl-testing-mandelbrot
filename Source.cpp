@@ -47,6 +47,7 @@ int main()
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
@@ -135,6 +136,7 @@ int main()
     ourShader.use();
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE); //not sure if this helps for fragments of the same primitive
     // render loop
     // -----------
 

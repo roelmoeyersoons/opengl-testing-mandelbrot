@@ -13,6 +13,10 @@ uniform float Time;
 //const float ITERATIONS = 50;
 const float INFINITY = 100.0f;
 const float PI = 3.14159265359F;
+const float TAU = 2* PI;
+
+
+const float SPIRALS = 3; 
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
@@ -33,19 +37,14 @@ void main()
     float y = fragCoords.y;
     float radius = sqrt(x*x + y*y);
 
-    //float angle = acos(x/radius);
-    //if(y < 0)
-    //    angle*=-1;
-    float division = y/x;
-    float angleRadians = atan(y, x) / (PI/1.5);
-    //float angleNormalized = angleRadians / PI + 0.5;
-    
-    //vec3 color = palette(angle, a, b, c, d);
-    //vec3 color = vec3(angleRadians, 0.0f, 0.0f);
+    float angleRadians = atan(y, x); //number between -PI and PI, so TAU range, for all 360 degrees of screen, flip from PI to -PI happens on 180 degrees
+    float angleNormalized = SPIRALS * (angleRadians / TAU) + 0.5; //dividing by TAU gives number between -0.5 and 0.5, by adding a constant we get multiple spirals
+    //this works well / so far only with the palette function, cos is unaffected by flip from PI to -PI
+
 
     //double normalized = pow((float(i)/ITERATIONS),3);
-    vec3 color = palette(angleRadians + radius/2 + Time, a, b, c, d);
-    //vec3 color = vec3(normalized, 0.0f, 0.0f);
+    vec3 color = palette(angleNormalized + radius/3 , a, b, c, d);
+    //vec3 color = vec3(angleRadians, 0.0f, 0.0f);
 
     FragColor = vec4(color, 1.0f);
     //FragColor = mix(texture(texture1, fTexCoords), texture(texture2, fTexCoords), 0.3);

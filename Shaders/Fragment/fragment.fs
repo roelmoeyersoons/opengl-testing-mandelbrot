@@ -22,9 +22,11 @@ const float SPIRALS = 3;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
+
+//c == how many loops, with behaviour of atan this should be whole number
 const vec3 c = vec3(2.0, 1.0, 10);
 //d == phase shift. for having symmetry, this should be 0 or 0.5, more generic  x*0.5 == d*c for any x
-const vec3 d = vec3(0.00, 0.0, 0.025); 
+const vec3 d = vec3(0.00, 0.0, 0.05); 
 
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {

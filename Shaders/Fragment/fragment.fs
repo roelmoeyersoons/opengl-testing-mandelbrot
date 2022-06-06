@@ -23,8 +23,8 @@ const float SPIRALS = 3;
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
 const vec3 c = vec3(2.0, 1.0, 10);
-//d == phase shift. for having symmetry, this should be 0 or 0.5, or 0.5 == d*c
-const vec3 d = vec3(0.00, 0.0, 0.05); 
+//d == phase shift. for having symmetry, this should be 0 or 0.5, more generic  x*0.5 == d*c for any x
+const vec3 d = vec3(0.00, 0.0, 0.025); 
 
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
@@ -44,7 +44,6 @@ void main()
     //this works well / so far only with the palette function, cos is unaffected by flip from PI to -PI
 
 
-    //double normalized = pow((float(i)/ITERATIONS),3);
     vec3 color = palette(angleNormalized + radius/2 , a, b, c, d);
     //vec3 color = vec3(angleRadians, 0.0f, 0.0f);
 

@@ -140,11 +140,15 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        processInput(window);
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         ourShader.setFloat("Time", currentFrame);
+        ourShader.setFloat("xCoord", xCoord);
+        ourShader.setFloat("yCoord", yCoord);
         
         // input
         // -----

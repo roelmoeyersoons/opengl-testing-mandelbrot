@@ -9,6 +9,8 @@ in vec2 fragCoords;
 
 
 uniform float Time;
+uniform float xCoord;
+uniform float yCoord;
 
 //const float ITERATIONS = 50;
 const float INFINITY = 100.0f;
@@ -20,9 +22,9 @@ const float SPIRALS = 3;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
-const vec3 c = vec3(2.0, 1.0, 5.0);
+const vec3 c = vec3(2.0, 1.0, 10);
 //d == phase shift. for having symmetry, this should be 0 or 0.5, or 0.5 == d*c
-const vec3 d = vec3(0.00, 0.0, 0.10); 
+const vec3 d = vec3(0.00, 0.0, 0.05); 
 
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {
@@ -33,8 +35,8 @@ vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 void main()
 {
 
-    float x = fragCoords.x;
-    float y = fragCoords.y;
+    float x = fragCoords.x + xCoord;
+    float y = fragCoords.y + yCoord;
     float radius = sqrt(x*x + y*y);
 
     float angleRadians = atan(y, x); //number between -PI and PI, so TAU range, for all 360 degrees of screen, flip from PI to -PI happens on 180 degrees

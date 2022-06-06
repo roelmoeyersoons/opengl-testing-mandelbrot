@@ -20,8 +20,9 @@ const float SPIRALS = 3;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
 const vec3 b = vec3(0.5, 0.5, 0.5);
-const vec3 c = vec3(1.0, 1.0, 1.0);
-const vec3 d = vec3(0.20, 0.5, 0.20);
+const vec3 c = vec3(2.0, 1.0, 5.0);
+//d == phase shift. for having symmetry, this should be 0 or 0.5, or 0.5 == d*c
+const vec3 d = vec3(0.00, 0.0, 0.10); 
 
 vec3 palette( in double t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
 {

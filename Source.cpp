@@ -143,7 +143,7 @@ int main()
     std::vector<float> pixel_data(SCR_WIDTH * SCR_HEIGHT, 0.0f);
     float minIterations = 0;
     float maxIterations = 10;
-    const int MAXITERATIONS = 800;
+    const int MAXITERATIONS = 2500;
     
     while (!glfwWindowShouldClose(window))
     {

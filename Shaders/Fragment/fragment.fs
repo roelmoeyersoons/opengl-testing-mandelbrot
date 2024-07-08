@@ -19,7 +19,7 @@ uniform double xCoord;
 uniform double yCoord;
 uniform double Zoom;
 
-const int MAXITERATIONS = 800;
+const int MAXITERATIONS = 2500;
 const float INFINITY = 4.0f;
 
 const vec3 a = vec3(0.5, 0.5, 0.5);
